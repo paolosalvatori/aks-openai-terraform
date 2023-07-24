@@ -216,7 +216,7 @@ module "openai" {
 }
 
 resource "azurerm_user_assigned_identity" "aks_workload_identity" {
-  name                = var.name_prefix == null ? "${random_string.prefix.result}${var.workload_managed_identity_name}" : "${var.name_prefix}${var.workload_managed_identity_name}"
+  name                = var.name_prefix == null ? "${random_string.prefix.result}${var.workload_user_assigned_identity_name}" : "${var.name_prefix}${var.workload_user_assigned_identity_name}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   tags                = var.tags
@@ -385,7 +385,7 @@ module "openai_private_endpoint" {
   is_manual_connection           = false
   subresource_name               = "account"
   private_dns_zone_group_name    = "AcrPrivateDnsZoneGroup"
-  private_dns_zone_group_ids     = [module.acr_private_dns_zone.id]
+  private_dns_zone_group_ids     = [module.openai_private_dns_zone.id]
 }
 
 module "acr_private_endpoint" {
